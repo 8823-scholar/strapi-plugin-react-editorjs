@@ -1,14 +1,18 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef, useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
-import EditorJs from 'react-editor-js';
+import { createReactEditorJS } from 'react-editor-js';
+
 import requiredTools from './requiredTools';
 import customTools from '../../config/customTools';
 
 import MediaLibAdapter from '../medialib/adapter'
 import MediaLibComponent from '../medialib/component';
-import {changeFunc, getToggleFunc} from '../medialib/utils';
+import { changeFunc, getToggleFunc } from '../medialib/utils';
 
 const Editor = ({ onChange, name, value }) => {
+  const EditorJs = useMemo(() => {
+    return createReactEditorJS();
+  }, []);
 
   const [editorInstance, setEditorInstance] = useState();
   const [mediaLibBlockIndex, setMediaLibBlockIndex] = useState(-1);
@@ -40,7 +44,7 @@ const Editor = ({ onChange, name, value }) => {
 
   return (
     <>
-      <div style={{ border: `1px solid rgb(227, 233, 243)`, borderRadius: `2px`, marginTop: `4px` }}>
+      <div style={{ border: `1px solid rgb(227, 233, 243)`, borderRadius: `2px`, marginTop: `4px`, paddingRight: "16px" }}>
         <EditorJs
           // data={JSON.parse(value)}
           // enableReInitialize={true}
@@ -58,7 +62,7 @@ const Editor = ({ onChange, name, value }) => {
               onChange({ target: { name, value: JSON.stringify(newData) } });
             }
           }}
-          tools={{...requiredTools, ...customTools, ...customImageTool}}
+          tools={{...customImageTool, ...customTools}}
           instanceRef={instance => setEditorInstance(instance)}
         />
       </div>
