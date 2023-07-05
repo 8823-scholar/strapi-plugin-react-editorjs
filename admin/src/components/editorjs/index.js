@@ -1,8 +1,8 @@
-import React, { useState, useCallback, useRef, useEffect, useMemo } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { createReactEditorJS } from 'react-editor-js';
 
-import requiredTools from './requiredTools';
+// import requiredTools from './requiredTools';
 import customTools from '../../config/customTools';
 
 import MediaLibAdapter from '../medialib/adapter'
