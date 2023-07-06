@@ -2,7 +2,7 @@ import React, { useState, useCallback, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { createReactEditorJS } from 'react-editor-js';
 
-// import requiredTools from './requiredTools';
+import requiredTools from './requiredTools';
 import customTools from '../../config/customTools';
 
 import MediaLibAdapter from '../medialib/adapter'
@@ -42,28 +42,26 @@ const Editor = ({ onChange, name, value }) => {
     }
   }
 
+  const onInitialize = useCallback((editorCore) => {
+    setEditorInstance(editorCore.dangerouslyLowLevelInstance);
+  }, []);
+
+  const onChangeHandler = useCallback((api) => {
+    api.saver.save().then((outputData) => {
+      onChange({ target: { name, value: JSON.stringify(outputData) } });
+    });
+  }, [name, editorInstance]);
+
   return (
     <>
       <div style={{ border: `1px solid rgb(227, 233, 243)`, borderRadius: `2px`, marginTop: `4px`, paddingRight: "16px" }}>
         <EditorJs
           // data={JSON.parse(value)}
           // enableReInitialize={true}
-          onReady={(api) => {
-            if(value && JSON.parse(value).blocks.length) {
-              api.blocks.render(JSON.parse(value))
-            }
-            document.querySelector('[data-tool="image"]').remove()
-          }}
-          onChange={(api, newData) => {
-            if (!newData.blocks.length) {
-              newData = null;
-              onChange({ target: { name, value: newData } });
-            } else {
-              onChange({ target: { name, value: JSON.stringify(newData) } });
-            }
-          }}
-          tools={{...customImageTool, ...customTools}}
-          instanceRef={instance => setEditorInstance(instance)}
+          defaultValue={value ? JSON.parse(value) : null}
+          tools={{...requiredTools, ...customImageTool, ...customTools}}
+          onInitialize={onInitialize}
+          onChange={onChangeHandler}
         />
       </div>
       <MediaLibComponent

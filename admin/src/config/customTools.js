@@ -13,8 +13,10 @@ import Marker from '@editorjs/marker'
 import CheckList from '@editorjs/checklist'
 import Delimiter from '@editorjs/delimiter'
 import InlineCode from '@editorjs/inline-code'
+// import SimpleImage from '@editorjs/simple-image'
 
 const customTools = {
+  // simpleImage: SimpleImage,
   embed: Embed,
   table: {
     class: Table,
