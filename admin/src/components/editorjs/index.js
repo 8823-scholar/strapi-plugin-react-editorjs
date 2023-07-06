@@ -5,9 +5,8 @@ import { createReactEditorJS } from 'react-editor-js';
 import requiredTools from './requiredTools';
 import customTools from '../../config/customTools';
 
-import MediaLibAdapter from '../medialib/adapter'
-import MediaLibComponent from '../medialib/component';
-import { changeFunc, getToggleFunc } from '../medialib/utils';
+import { MediaLibAdapter, MediaLibComponent, changeFunc, getToggleFunc } from '../medialib'
+import { ProductLinkTool, ProductLinkComponent, changeProductLinkFunc } from '../ProductLink';
 
 const Editor = ({ onChange, name, value }) => {
   const EditorJs = useMemo(() => {
@@ -17,6 +16,8 @@ const Editor = ({ onChange, name, value }) => {
   const [editorInstance, setEditorInstance] = useState();
   const [mediaLibBlockIndex, setMediaLibBlockIndex] = useState(-1);
   const [isMediaLibOpen, setIsMediaLibOpen] = useState(false);
+  const [productLinkBlockIndex, setProductLinkBlockIndex] = useState(-1);
+  const [isProductLinkOpen, setIsProductLinkOpen] = useState(false);
 
   const mediaLibToggleFunc = useCallback(getToggleFunc({
     openStateSetter: setIsMediaLibOpen,
@@ -33,13 +34,32 @@ const Editor = ({ onChange, name, value }) => {
     mediaLibToggleFunc();
   }, [mediaLibBlockIndex, editorInstance]);
 
-  const customImageTool = {
+  const productLinkToggleFunc = useCallback(getToggleFunc({
+    openStateSetter: setIsProductLinkOpen,
+    indexStateSetter: setProductLinkBlockIndex,
+  }), []);
+
+  const handleProductLinkChange = useCallback((data) => {
+    changeProductLinkFunc({
+      editor: editorInstance,
+      data,
+      index: productLinkBlockIndex,
+    });
+  }, [productLinkBlockIndex, editorInstance]);
+
+  const additionalTools = {
     mediaLib: {
       class: MediaLibAdapter,
       config: {
-        mediaLibToggleFunc
-      }
-    }
+        mediaLibToggleFunc,
+      },
+    },
+    productLink: {
+      class: ProductLinkTool,
+      config: {
+        toggleFunc: productLinkToggleFunc,
+      },
+    },
   }
 
   const onInitialize = useCallback((editorCore) => {
@@ -59,7 +79,7 @@ const Editor = ({ onChange, name, value }) => {
           // data={JSON.parse(value)}
           // enableReInitialize={true}
           defaultValue={value ? JSON.parse(value) : null}
-          tools={{...requiredTools, ...customImageTool, ...customTools}}
+          tools={{...requiredTools, ...additionalTools, ...customTools}}
           onInitialize={onInitialize}
           onChange={onChangeHandler}
         />
@@ -68,6 +88,11 @@ const Editor = ({ onChange, name, value }) => {
         isOpen={isMediaLibOpen}
         onChange={handleMediaLibChange}
         onToggle={mediaLibToggleFunc}
+      />
+      <ProductLinkComponent
+        isOpen={isProductLinkOpen}
+        onChange={handleProductLinkChange}
+        onToggle={productLinkToggleFunc}
       />
     </>
   );

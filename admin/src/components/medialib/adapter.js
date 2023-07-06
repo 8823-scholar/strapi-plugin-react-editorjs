@@ -1,4 +1,4 @@
-export default class MediaLibAdapter {
+export class MediaLibAdapter {
 
   static get toolbox() {
     return {
