@@ -27,6 +27,15 @@ module.exports = {
           auth: false
         },
       },
+      {
+        method: "GET",
+        path: "/products/:id",
+        handler: "editorjs.getProduct",
+        config: {
+          "description": "Get Product",
+          auth: false
+        },
+      },
     ]
   }
 }

@@ -6,7 +6,7 @@ import requiredTools from './requiredTools';
 import customTools from '../../config/customTools';
 
 import { MediaLibAdapter, MediaLibComponent, changeFunc, getToggleFunc } from '../medialib'
-import { ProductLinkTool, ProductLinkComponent, changeProductLinkFunc } from '../ProductLink';
+import { ProductLinkTool } from '../ProductLink';
 
 const Editor = ({ onChange, name, value }) => {
   const EditorJs = useMemo(() => {
@@ -16,8 +16,6 @@ const Editor = ({ onChange, name, value }) => {
   const [editorInstance, setEditorInstance] = useState();
   const [mediaLibBlockIndex, setMediaLibBlockIndex] = useState(-1);
   const [isMediaLibOpen, setIsMediaLibOpen] = useState(false);
-  const [productLinkBlockIndex, setProductLinkBlockIndex] = useState(-1);
-  const [isProductLinkOpen, setIsProductLinkOpen] = useState(false);
 
   const mediaLibToggleFunc = useCallback(getToggleFunc({
     openStateSetter: setIsMediaLibOpen,
@@ -34,19 +32,6 @@ const Editor = ({ onChange, name, value }) => {
     mediaLibToggleFunc();
   }, [mediaLibBlockIndex, editorInstance]);
 
-  const productLinkToggleFunc = useCallback(getToggleFunc({
-    openStateSetter: setIsProductLinkOpen,
-    indexStateSetter: setProductLinkBlockIndex,
-  }), []);
-
-  const handleProductLinkChange = useCallback((data) => {
-    changeProductLinkFunc({
-      editor: editorInstance,
-      data,
-      index: productLinkBlockIndex,
-    });
-  }, [productLinkBlockIndex, editorInstance]);
-
   const additionalTools = {
     mediaLib: {
       class: MediaLibAdapter,
@@ -56,9 +41,6 @@ const Editor = ({ onChange, name, value }) => {
     },
     productLink: {
       class: ProductLinkTool,
-      config: {
-        toggleFunc: productLinkToggleFunc,
-      },
     },
   }
 
@@ -88,11 +70,6 @@ const Editor = ({ onChange, name, value }) => {
         isOpen={isMediaLibOpen}
         onChange={handleMediaLibChange}
         onToggle={mediaLibToggleFunc}
-      />
-      <ProductLinkComponent
-        isOpen={isProductLinkOpen}
-        onChange={handleProductLinkChange}
-        onToggle={productLinkToggleFunc}
       />
     </>
   );

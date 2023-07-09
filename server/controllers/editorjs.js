@@ -86,5 +86,13 @@ module.exports = ({ strapi }) => ({
         message: e.message
       }, 500)
     }
-  }
+  },
+
+  getProduct: async (ctx) => {
+    const { id } = ctx.params;
+    const apiOrigin = strapi.config.get("plugin.editorjs.apiOrigin");
+
+    const response = await axios.get(`${apiOrigin}/api/store/products/${id}`);
+    ctx.send(response.data.data);
+  },
 });
