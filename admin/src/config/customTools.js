@@ -17,7 +17,23 @@ import InlineCode from '@editorjs/inline-code'
 
 const customTools = {
   // simpleImage: SimpleImage,
-  embed: Embed,
+  embed: {
+    class: Embed,
+    config: {
+      services: {
+        youtube: true,
+        twitter: true,
+        x: {
+          regex: /^https?:\/\/x\.com\/(?:#!\/)?(\w+)\/status(?:es)?\/(\d+?.*)?$/,
+          embedUrl: "https://twitframe.com/show?lang=ja&url=https://twitter.com/<%= remote_id %>",
+          html: "<iframe width=\"600\" height=\"350\" style=\"margin: 0 auto;\" frameborder=\"0\" scrolling=\"no\" allowtransparency=\"true\"></iframe>",
+          height: 350,
+          width: 600,
+          id: ids => ids.join("/status/"),
+        },
+      },
+    },
+  },
   table: {
     class: Table,
     inlineToolbar: true,

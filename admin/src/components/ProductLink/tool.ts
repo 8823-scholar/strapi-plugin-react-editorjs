@@ -37,9 +37,12 @@ export class ProductLinkTool {
 
   render() {
     const block = document.createElement("div");
-    block.style.border = "1px solid #ddd";
-    block.style.padding = "12px";
-    block.style.borderRadius = "4px";
+    block.className = "cdx-block";
+
+    const innerBlock = document.createElement("div");
+    innerBlock.style.border = "1px solid #ddd";
+    innerBlock.style.padding = "12px";
+    innerBlock.style.borderRadius = "4px";
 
     const productBlock = document.createElement("div");
     const productImage = document.createElement("img");
@@ -66,7 +69,7 @@ export class ProductLinkTool {
     idLabel.style.marginBottom = "8px";
     idLabel.style.fontSize = "12px";
     idLabel.style.fontWeight = "bold";
-    block.appendChild(idLabel);
+    innerBlock.appendChild(idLabel);
 
     const idInput = document.createElement("input");
     idInput.setAttribute("id", "id");
@@ -81,8 +84,8 @@ export class ProductLinkTool {
         productDescription.textContent = product.description;
       }
     });
-    block.appendChild(idInput);
-    block.dispatchEvent(new Event("change"));
+    innerBlock.appendChild(idInput);
+    innerBlock.dispatchEvent(new Event("change"));
 
     const productLabel = document.createElement("label");
     productLabel.textContent = "商品情報";
@@ -91,8 +94,10 @@ export class ProductLinkTool {
     productLabel.style.marginBottom = "8px";
     productLabel.style.fontSize = "12px";
     productLabel.style.fontWeight = "bold";
-    block.appendChild(productLabel);
-    block.appendChild(productBlock);
+    innerBlock.appendChild(productLabel);
+    innerBlock.appendChild(productBlock);
+
+    block.appendChild(innerBlock);
 
     return block;
   }
@@ -106,7 +111,6 @@ export class ProductLinkTool {
   async findProduct(id: string): Promise<ProductData> {
     const response = await fetch(`/api/editorjs/products/${id}`);
     const { product } = await response.json();
-    console.log('data', product);
     return product;
   }
 }
