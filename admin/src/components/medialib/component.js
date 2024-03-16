@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {prefixFileUrlWithBackendUrl, useLibrary} from '@strapi/helper-plugin';
 import PropTypes from 'prop-types';
 
-const MediaLibComponent = ({isOpen, onChange, onToggle}) => {
+export const MediaLibComponent = ({isOpen, onChange, onToggle}) => {
  
   const { components } = useLibrary();
   const [data, setData] = useState(null);
