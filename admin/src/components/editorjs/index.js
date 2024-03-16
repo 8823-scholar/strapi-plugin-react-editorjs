@@ -6,7 +6,6 @@ import requiredTools from './requiredTools';
 import customTools from '../../config/customTools';
 
 import { MediaLibAdapter, MediaLibComponent, changeFunc, getToggleFunc } from '../medialib'
-import { ProductLinkTool } from '../ProductLink';
 
 const Editor = ({ onChange, name, value }) => {
   const EditorJs = useMemo(() => {
@@ -39,9 +38,9 @@ const Editor = ({ onChange, name, value }) => {
         mediaLibToggleFunc,
       },
     },
-    productLink: {
-      class: ProductLinkTool,
-    },
+    // productLink: {
+    //   class: ProductLinkTool,
+    // },
   }
 
   const onInitialize = useCallback((editorCore) => {
